@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+<<<<<<< HEAD
             KOT104_XuongThucHanhTheme {
 
             }
@@ -27,3 +28,9 @@ class MainActivity : ComponentActivity() {
 
 
 
+=======
+
+        }
+    }
+}
+>>>>>>> 6d4da9c6031f12a441bee77953f067c27d04549a
