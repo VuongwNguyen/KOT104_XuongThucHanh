@@ -13,7 +13,7 @@ class successfullyReponse {
     }
 }
 
-class errorReponse extends Error {
+class errorResponse extends Error {
     constructor({ message = '', status = false, code = 500 }) {
         super(message);
         this.status = status;
@@ -23,5 +23,5 @@ class errorReponse extends Error {
 
 module.exports = {
     successfullyReponse,
-    errorReponse
+    errorResponse
 }

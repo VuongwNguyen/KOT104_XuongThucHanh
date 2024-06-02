@@ -10,6 +10,7 @@ router.post('/', async (req, res) => {
     });
 });
 
+router.use('/api/account', require('./account.routes'));
 
 
 module.exports = router;

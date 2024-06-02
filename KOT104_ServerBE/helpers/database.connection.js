@@ -8,7 +8,8 @@ const databasePassword = process.env.DATABASE_PASSWORD || '0134';
 
 const sequelize = new Sequelize(databaseName, databaseUser, databasePassword, {
     host: 'localhost',
-    dialect: 'mysql'
+    dialect: 'mysql',
+    logging: false
 });
 
 (async () => {
