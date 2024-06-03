@@ -37,21 +37,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.kot104_xuongthuchanh.R
 import com.example.kot104_xuongthuchanh.components.screens.auth.ui.theme.KOT104_XuongThucHanhTheme
 
-class DetailProductScreen : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            KOT104_XuongThucHanhTheme {
-                BodyDetail()
-
-            }
-        }
-    }
-}
+//class DetailProductScreen : ComponentActivity() {
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        enableEdgeToEdge()
+//        setContent {
+//            KOT104_XuongThucHanhTheme {
+//                BodyDetail()
+//
+//            }
+//        }
+//    }
+//}
 data class Product(val name:String, val image: Int, val rate:Double)
  val ItemProduct = listOf(
      Product("Ground Beef Tacos",R.drawable.beef_tacos,4.5),
@@ -59,7 +60,7 @@ data class Product(val name:String, val image: Int, val rate:Double)
      Product("Ground Beef Tacos",R.drawable.beef_tacos,4.5),
  )
 @Composable
-fun BodyDetail() {
+fun DetailProductScreen(Nav_Controller: NavHostController) {
     Column(
         modifier = Modifier
             .background(color = Color(0xff263238))
@@ -364,10 +365,10 @@ fun ListProduct(item:Product){
         }
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    KOT104_XuongThucHanhTheme {
-        BodyDetail()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview() {
+//    KOT104_XuongThucHanhTheme {
+////        DetailProductScreen()
+//    }
+//}

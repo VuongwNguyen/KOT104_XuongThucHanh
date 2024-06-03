@@ -1,6 +1,6 @@
 package com.example.kot104_xuongthuchanh.components.screens.auth
 
-import androidx.compose.foundation.background
+import  androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
