@@ -1,11 +1,11 @@
 const AccountService = require('../services/account.service');
-const { successfullyReponse } = require('../core/reponseHandle');
+const { successfullyResponse } = require('../core/reponseHandle');
 
 
 class AccountController {
     async createAccount(req, res) {
         const { fullname, password, email } = req.body;
-        return new successfullyReponse({
+        return new successfullyResponse({
             message: 'Account created successfully',
             data: await AccountService.createAccount({ fullname, password, email })
         }).json(res);
@@ -13,7 +13,7 @@ class AccountController {
 
     async loginAccount(req, res) {
         const { email, password } = req.body;
-        return new successfullyReponse({
+        return new successfullyResponse({
             message: 'Login successfully',
             data: await AccountService.login({ email, password })
         }).json(res);

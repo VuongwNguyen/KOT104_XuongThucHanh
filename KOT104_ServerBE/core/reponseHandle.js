@@ -1,4 +1,4 @@
-class successfullyReponse {
+class successfullyResponse {
     constructor({ data, message, status = true }) {
         this.data = data;
         this.message = message;
@@ -22,6 +22,6 @@ class errorResponse extends Error {
 }
 
 module.exports = {
-    successfullyReponse,
+    successfullyResponse,
     errorResponse
 }

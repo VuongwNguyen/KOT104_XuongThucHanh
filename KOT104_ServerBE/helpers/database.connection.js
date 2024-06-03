@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const databaseName = process.env.DATABASE_NAME || 'SampleDB';
 const databaseUser = process.env.DATABASE_USER || 'root';
-const databasePassword = process.env.DATABASE_PASSWORD || '0134';
+const databasePassword = process.env.DATABASE_PASSWORD || 'your_password_here';
 
 const sequelize = new Sequelize(databaseName, databaseUser, databasePassword, {
     host: 'localhost',
@@ -36,10 +36,6 @@ async function databaseConnection() {
         console.log('Connection has been established successfully.');
     } catch (error) {
         console.error('Unable to connect to the database:', error);
-        if (error.original.errno === 1049) {
-            console.error('Database does not exist');
-
-        }
     }
 }
 
