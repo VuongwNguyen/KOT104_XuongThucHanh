@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KOT104_XuongThucHanh</string>
+    <string name="title_activity_detail_product_screen">DetailProductScreen</string>
 </resources>
