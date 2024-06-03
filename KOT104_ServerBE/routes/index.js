@@ -8,6 +8,7 @@ router.get('/', async (req, res) => {
 
 router.use('/api/account', require('./account.routes'));
 router.use('/api/category', require('./category.routes'));
+router.use('/api/product', require('./product.routes'));
 
 
 

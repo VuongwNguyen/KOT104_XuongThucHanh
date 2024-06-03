@@ -34,30 +34,7 @@ async function multipleCreateCategory(categories) {
     }
 };
 
-const categories = [
-    {
-        name: 'Laptop',
-        description: 'Laptop description'
-    },
-    {
-        name: 'Smartphone',
-        description: 'Smartphone description'
-    },
-    {
-        name: 'Tablet',
-        description: 'Tablet description'
-    },
-    {
-        name: 'Smartwatch',
-        description: 'Smartwatch description'
-    },
-    {
-        name: 'Desktop',
-        description: 'Desktop description'
-    }
-];
 
-multipleCreateCategory(categories);
 
 
 module.exports = category;

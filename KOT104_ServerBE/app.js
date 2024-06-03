@@ -5,6 +5,7 @@ var logger = require('morgan');
 var createError = require('http-errors');
 var helmet = require('helmet');
 var app = express();
+var cors = require('cors');
 
 const { databaseConnection } = require('./helpers/database.connection');
 const indexRouter = require('./routes/index');
@@ -12,6 +13,7 @@ const indexRouter = require('./routes/index');
 
 databaseConnection(); // connect to database
 
+app.use(cors());
 app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());

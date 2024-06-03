@@ -43,7 +43,7 @@ class ProductService {
     async getAllProductsByCategory(categoryId) {
         return await product.findAll({
             where: {
-                categoryId
+                categoryId: categoryId
             }
         });
     }

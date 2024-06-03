@@ -1,21 +1,25 @@
 const { Sequelize } = require('sequelize');
 const mysql = require('mysql2/promise');
-require('dotenv').config();
+// require('dotenv').config();
+
 
 const databaseName = process.env.DATABASE_NAME || 'SampleDB';
 const databaseUser = process.env.DATABASE_USER || 'root';
-const databasePassword = process.env.DATABASE_PASSWORD || 'your_password_here';
+const databasePassword = process.env.DATABASE_PASSWORD || '0134';
+const databaseHost = process.env.DATABASE_HOST || 'localhost';
+const port = process.env.DATABASE_PORT || 3306;
 
 const sequelize = new Sequelize(databaseName, databaseUser, databasePassword, {
-    host: 'localhost',
+    host: databaseHost,
     dialect: 'mysql',
-    logging: false
+    logging: false,
+    port: port,
 });
 
 (async () => {
     try {
         const connection = await mysql.createConnection({
-            host: 'localhost',
+            host: databaseHost,
             user: databaseUser,
             password: databasePassword
         });
@@ -25,8 +29,6 @@ const sequelize = new Sequelize(databaseName, databaseUser, databasePassword, {
         console.error('Unable to create database:', error);
     }
 })();
-
-
 
 async function databaseConnection() {
     try {
