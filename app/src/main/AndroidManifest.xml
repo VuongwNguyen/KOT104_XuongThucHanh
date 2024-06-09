@@ -13,11 +13,6 @@
         android:theme="@style/Theme.KOT104_XuongThucHanh"
         tools:targetApi="31">
         <activity
-            android:name=".components.screens.auth.DetailProductScreen"
-            android:exported="false"
-            android:label="@string/title_activity_detail_product_screen"
-            android:theme="@style/Theme.KOT104_XuongThucHanh" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
