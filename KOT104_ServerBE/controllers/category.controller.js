@@ -1,4 +1,4 @@
-const {successfullyResponse} = require('../core/reponseHandle');
+const { successfullyResponse } = require('../core/reponseHandle');
 const CategoryService = require('../services/category.service');
 
 
@@ -9,6 +9,8 @@ class CategoryController {
             data: await CategoryService.getCategories()
         }).json(res);
     }
+
+   
 }
 
 module.exports = new CategoryController();

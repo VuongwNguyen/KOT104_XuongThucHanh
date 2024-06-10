@@ -1,5 +1,6 @@
 
 const ProductService = require('../services/product.service');
+const CategoryService = require('../services/category.service');
 const { successfullyResponse } = require('../core/reponseHandle');
 
 
@@ -23,18 +24,26 @@ class ProductController {
     async getAllProductsByCategory(req, res) {
         const categoryId = req.params.categoryId;
         const products = await ProductService.getAllProductsByCategory(categoryId);
+        const nameCategory = await CategoryService.getCategoryById(categoryId);
         new successfullyResponse({
             message: 'Successfully',
-            data: products
+            data: {
+                nameCategory,
+                products
+            }
         }).json(res);
     }
 
     async getProductById(req, res) {
         const id = req.params.id;
         const product = await ProductService.getProductById(id);
+       
+
         new successfullyResponse({
             message: 'Successfully',
-            data: product
+            data: {
+                products: product
+            }
         }).json(res);
     }
 }
