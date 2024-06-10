@@ -18,13 +18,13 @@ import androidx.compose.ui.unit.sp
 import com.example.kot104_xuongthuchanh.R
 
 @Composable
-fun ButtonCustom(textButton: String) {
+fun ButtonCustom(textButton: String, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.padding(top = 20.dp),
         color = Color.Transparent
     ) {
         ElevatedButton(
-            onClick = { /*TODO*/ },
+            onClick = { onClick() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),

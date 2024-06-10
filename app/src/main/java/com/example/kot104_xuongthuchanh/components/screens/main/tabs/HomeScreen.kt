@@ -1,8 +1,8 @@
-package com.example.kot104_xuongthuchanh.components.screens.main
-
+package com.example.kot104_xuongthuchanh.components.screens.main.tabs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,132 +13,224 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.size.Size
+import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.kot104_xuongthuchanh.R
 import com.example.kot104_xuongthuchanh.components.customCpns.ButtonIconCustom
+import com.example.kot104_xuongthuchanh.helper.RetrofitAPI
+import com.example.kot104_xuongthuchanh.httpModel.categories.CategoryResponse
+import com.example.kot104_xuongthuchanh.httpModel.categories.dataCategory
+import com.example.kot104_xuongthuchanh.httpModel.categories.dataCategoryResponse
+import com.example.kot104_xuongthuchanh.httpModel.categories.dataProducts
+import com.example.kot104_xuongthuchanh.models.UserInfo
 
-data class productInCategory(
-    val id: Int,
-    val name: String,
-    val start: Float,
-    val vote:  Int,
-    val img: String
-)
+//trihmps36557
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun ProductInCategoryScreen(){
-    val products = listOf(
-        productInCategory(1, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(2, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(3, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(4, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(5, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(6, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(7, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(8, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(9, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(10, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(11, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-        productInCategory(12, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg"),
-    )
+fun HomeScreen(navControllerContainer: NavHostController, writeToShared: (UserInfo) -> Unit) {
+
+    var Categories = remember { mutableStateListOf<dataCategoryResponse>() }
+
+    fun callBackcategory(response: CategoryResponse) {
+        Categories.clear()
+        Categories.addAll(response.data ?: listOf())
+    }
+
+    fun getAllCategories() {
+        try {
+            val api = RetrofitAPI()
+            api.getCategories {
+                if (it != null) {
+                    callBackcategory(it)
+                }
+            }
+        } catch (e: Exception) {
+            println("${e.message}")
+        }
+    }
+
+    getAllCategories()
 
     Surface (
         color = Color(android.graphics.Color.parseColor("#263238"))
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
-        ){
+        ) {
             Row (
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 ButtonIconCustom(
-                    icon = R.drawable.icon_back_lab3,
+                    icon = R.drawable.menu2,
                     shape = 4,
-                    width = 38,
-                    height = 38,
+                    width = 40,
+                    height = 40,
                     elevation = 10,
                     onClick = { /*TODO*/ },
                     colorShadow = "ffffff"
                 )
 
-                Text(
-                    text = "Featured Partner",
-                    fontSize = 22.sp,
-                    fontFamily = FontFamily(Font(R.font.roboto_bold)),
-                    color = Color(android.graphics.Color.parseColor("#FF7400"))
-                )
+                Column(
+                    modifier = Modifier
+                        .width(210.dp)
+                        .align(Alignment.CenterVertically),
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
+                        text = "Deliver to",
+                        fontFamily = FontFamily(Font(R.font.roboto_bold)),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(500),
+                        lineHeight = 17.sp,
+                        color = Color(android.graphics.Color.parseColor("#8C9099"))
+                    )
 
-                Spacer(modifier = Modifier
-                    .width(38.dp)
-                    .height(38.dp))
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
+                        text = "Choose your city and state",
+                        fontFamily = FontFamily(Font(R.font.roboto_bold)),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight(500),
+                        lineHeight = 18.sp,
+                        color = Color(android.graphics.Color.parseColor("#FE724C"))
+                    )
+                }
+
+                ButtonIconCustom(
+                    icon = R.drawable.personal1,
+                    shape = 4,
+                    width = 40,
+                    height = 40,
+                    elevation = 10,
+                    onClick = { writeToShared(
+                        UserInfo(
+                            userId = null,
+                            email = null,
+                            fullname = null
+                        )
+                    ) },
+                    colorShadow = "ffffff"
+                )
             }
 
-            LazyColumn (
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 10.dp)
-            ){
-                items(
-                    items = products,
-                    itemContent = { item ->
-                        cpnItem(item)
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Categories.forEach { (category, products) ->
+                    item {
+                        CategorySection(category = category, items = products, navControllerContainer)
+                        Spacer(modifier = Modifier.height(25.dp))
                     }
-                )
+                }
             }
         }
     }
 }
 
 @Composable
-fun cpnItem(item: productInCategory) {
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(item.img)
-            .size(Size.ORIGINAL)
-            .build()
-    )
-    Column (
+fun CategorySection(
+    category: dataCategory,
+    items: List<dataProducts>,
+    navControllerContainer: NavHostController
+) {
+    Column{
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(30.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "${category.name}",
+                fontFamily = FontFamily(Font(R.font.roboto_bold)),
+                fontSize = 16.sp,
+                fontWeight = FontWeight(800),
+                lineHeight = 16.sp,
+                color = Color(android.graphics.Color.parseColor("#FFFFFF")),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+            )
+
+            TextButton(
+                    onClick = { navControllerContainer.navigate("ProductInCategoryScreen/${category.id}") },
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                ) {
+                    Text(
+                        text = "see all",
+                        fontFamily = FontFamily(Font(R.font.roboto_bold)),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight(400),
+                        lineHeight = 14.sp,
+                        color = Color(android.graphics.Color.parseColor("#22A45D"))
+                    )
+                }
+        }
+
+        LazyRow(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp)
+        ) {
+            items(
+                items = items,
+                itemContent = { item ->
+                    cpnItem(item, navControllerContainer)
+                    Spacer(modifier = Modifier.width(15.dp))
+                }
+            )
+        }
+    }
+}
+@Composable
+fun cpnItem(item: dataProducts, navControllerContainer: NavHostController) {
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .width(266.dp)
             .height(229.dp)
             .clip(RoundedCornerShape(25.dp))
+            .clickable { navControllerContainer.navigate("DetailProductScreen/${item.id}") }
     ){
         Surface (
             modifier = Modifier
                 .fillMaxWidth()
                 .height(136.dp)
         ){
-            Image(
-                painter = painter,
+            AsyncImage(
+                model = item.image_url,
                 contentDescription = null,
-                contentScale = ContentScale.FillBounds,
+                contentScale = ContentScale.FillHeight,
                 modifier = Modifier.fillMaxSize()
             )
             Column (
@@ -163,7 +255,7 @@ fun cpnItem(item: productInCategory) {
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         Text(
-                            text = "${item.start}",
+                            text = "4.5",
                             fontSize = 11.69.sp,
                             fontFamily = FontFamily(Font(R.font.roboto_thinitalic)),
                             color = Color.Black
@@ -178,7 +270,7 @@ fun cpnItem(item: productInCategory) {
                         )
 
                         Text(
-                            text = "(${item.vote}+)",
+                            text = "(25+)",
                             fontSize = 11.69.sp,
                             fontFamily = FontFamily(Font(R.font.roboto_thinitalic)),
                             color = Color.Black

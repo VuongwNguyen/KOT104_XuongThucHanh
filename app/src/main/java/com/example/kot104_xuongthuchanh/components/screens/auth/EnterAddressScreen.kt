@@ -87,7 +87,7 @@ fun EnterAddressScreen(){
                 isTextInputPassword = false
             )
 
-            ButtonCustom(textButton = "Let's go")
+            ButtonCustom(textButton = "Let's go", onClick = {})
         }
     }
 }

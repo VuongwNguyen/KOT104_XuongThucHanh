@@ -1,7 +1,10 @@
-package com.example.kot104_xuongthuchanh.components.screens.auth
+package com.example.kot104_xuongthuchanh.components.screens.main.stacks
 
+
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,255 +15,140 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.size.Size
+import coil.compose.AsyncImage
 import com.example.kot104_xuongthuchanh.R
 import com.example.kot104_xuongthuchanh.components.customCpns.ButtonIconCustom
+import com.example.kot104_xuongthuchanh.helper.RetrofitAPI
+import com.example.kot104_xuongthuchanh.httpModel.categories.dataProducts
+import com.example.kot104_xuongthuchanh.httpModel.products.ProductsByCategoryResponse
 
-//trihmps36557
-data class product(
-    val id: Int,
-    val name: String,
-    val start: Float,
-    val vote:  Int,
-    val img: String,
-    val category: String,
-)
-@Preview(showBackground = true, showSystemUi = true)
+
+
 @Composable
-fun HomeScreen() {
+fun ProductInCategoryScreen(navControllerContainer: NavHostController, categoryId: String?) {
+    var Products = remember {
+        mutableStateListOf<dataProducts>()
+    }
 
-    val products = listOf(
-        product(1, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì heo"),
-        product(2, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì heo"),
-        product(3, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì heo"),
-        product(4, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì heo"),
-        product(5, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì heo"),
-        product(6, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì bò"),
-        product(7, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì bò"),
-        product(8, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì bò"),
-        product(9, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì bò"),
-        product(10, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì bò"),
-        product(11, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì trứng"),
-        product(12, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì trứng"),
-        product(13, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì trứng"),
-        product(14, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì trứng"),
-        product(15, "McDonald’s",4.5f,25, "https://cdn.tgdd.vn/Products/Images/42/324893/honor-x8b-thiet-ke.jpg", "Bánh mì trứng"),
-    )
+    var nameCategory = remember {
+        mutableStateOf("")
+    }
 
-    val groupedProducts = products.groupBy { it.category }
+    fun callBackProductsByCategory(it: ProductsByCategoryResponse) {
+        Products.clear()
+        Products.addAll(it.data.products ?: listOf())
+        nameCategory.value = it.data.nameCategory.name
+    }
+
+    fun getProductsByCategory(){
+        try {
+            val api = RetrofitAPI()
+            if (categoryId != null){
+                api.getProductsByCategory(categoryId = categoryId){
+                    if (it != null){
+                        callBackProductsByCategory(it)
+                    }
+                }
+            }
+        }catch (e: Exception){
+            Log.d(">>>>", "getProductByCategory: ${e.message}")
+        }
+    }
+
+    getProductsByCategory()
 
     Surface (
         color = Color(android.graphics.Color.parseColor("#263238"))
-    ) {
+    ){
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
-        ) {
+        ){
             Row (
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
-            ) {
+            ){
                 ButtonIconCustom(
-                    icon = R.drawable.menu2,
+                    icon = R.drawable.icon_back_lab3,
                     shape = 4,
-                    width = 40,
-                    height = 40,
+                    width = 38,
+                    height = 38,
                     elevation = 10,
-                    onClick = { /*TODO*/ },
+                    onClick = { navControllerContainer.popBackStack() },
                     colorShadow = "ffffff"
                 )
 
-                Column(
-                    modifier = Modifier
-                        .width(210.dp)
-                        .align(Alignment.CenterVertically),
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally),
-                        text = "Deliver to",
-                        fontFamily = FontFamily(Font(R.font.roboto_bold)),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight(500),
-                        lineHeight = 17.sp,
-                        color = Color(android.graphics.Color.parseColor("#8C9099"))
-                    )
-
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally),
-                        text = "Choose your city and state",
-                        fontFamily = FontFamily(Font(R.font.roboto_bold)),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight(500),
-                        lineHeight = 18.sp,
-                        color = Color(android.graphics.Color.parseColor("#FE724C"))
-                    )
-                }
-
-                ButtonIconCustom(
-                    icon = R.drawable.personal1,
-                    shape = 4,
-                    width = 40,
-                    height = 40,
-                    elevation = 10,
-                    onClick = { /*TODO*/ },
-                    colorShadow = "ffffff"
+                Text(
+                    text = "${nameCategory.value}",
+                    fontSize = 22.sp,
+                    fontFamily = FontFamily(Font(R.font.roboto_bold)),
+                    color = Color(android.graphics.Color.parseColor("#FF7400"))
                 )
+
+                Spacer(modifier = Modifier
+                    .width(38.dp)
+                    .height(38.dp))
             }
 
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(top = 10.dp),
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Text(
-//                    text = "",
-//                    fontFamily = FontFamily(Font(R.font.roboto_bold)),
-//                    fontSize = 16.sp,
-//                    fontWeight = FontWeight(800),
-//                    lineHeight = 16.sp,
-//                    color = Color(android.graphics.Color.parseColor("#FFFFFF"))
-//                )
-//
-//                TextButton(
-//                    onClick = { /*TODO*/ },
-//                    modifier = Modifier
-//                        .align(Alignment.CenterVertically)
-//                ) {
-//                    Text(
-//                        text = "see all",
-//                        fontFamily = FontFamily(Font(R.font.roboto_bold)),
-//                        fontSize = 12.sp,
-//                        fontWeight = FontWeight(400),
-//                        lineHeight = 14.sp,
-//                        color = Color(android.graphics.Color.parseColor("#22A45D"))
-//                    )
-//                }
-//            }
-
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                groupedProducts.forEach { (category, items) ->
-                    item {
-                        CategorySection(category = category, items = items)
-                        Spacer(modifier = Modifier.height(25.dp))
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CategorySection(category: String, items: List<product>) {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(30.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = category,
-                fontFamily = FontFamily(Font(R.font.roboto_bold)),
-                fontSize = 16.sp,
-                fontWeight = FontWeight(800),
-                lineHeight = 16.sp,
-                color = Color(android.graphics.Color.parseColor("#FFFFFF")),
+            LazyColumn (
                 modifier = Modifier
-                    .align(Alignment.CenterVertically)
-            )
-
-            TextButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                ) {
-                    Text(
-                        text = "see all",
-                        fontFamily = FontFamily(Font(R.font.roboto_bold)),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight(400),
-                        lineHeight = 14.sp,
-                        color = Color(android.graphics.Color.parseColor("#22A45D"))
-                    )
-                }
-        }
-
-        LazyRow(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 10.dp)
-        ) {
-            items(
-                items = items,
-                itemContent = { item ->
-                    cpnItem(item)
-                    Spacer(modifier = Modifier.width(15.dp))
-                }
-            )
+                    .fillMaxSize()
+                    .padding(top = 10.dp)
+            ){
+                items(
+                    items = Products,
+                    itemContent = { item ->
+                        cpnItem(item, navControllerContainer)
+                    }
+                )
+            }
         }
     }
 }
+
 @Composable
-fun cpnItem(item: product) {
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(item.img)
-            .size(Size.ORIGINAL)
-            .build()
-    )
+fun cpnItem(item: dataProducts, navControllerContainer: NavHostController) {
     Column (
         modifier = Modifier
             .fillMaxWidth()
             .height(229.dp)
             .clip(RoundedCornerShape(25.dp))
+            .clickable { navControllerContainer.navigate("DetailProductScreen/${item.id}") }
     ){
         Surface (
             modifier = Modifier
                 .fillMaxWidth()
                 .height(136.dp)
         ){
-            Image(
-                painter = painter,
+            AsyncImage(
+                model = item.image_url,
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxSize()
-            )
+                modifier = Modifier.fillMaxSize())
             Column (
                 modifier = Modifier
                     .fillMaxSize()
@@ -283,7 +171,7 @@ fun cpnItem(item: product) {
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         Text(
-                            text = "${item.start}",
+                            text = "4.5",
                             fontSize = 11.69.sp,
                             fontFamily = FontFamily(Font(R.font.roboto_thinitalic)),
                             color = Color.Black
@@ -298,7 +186,7 @@ fun cpnItem(item: product) {
                         )
 
                         Text(
-                            text = "(${item.vote}+)",
+                            text = "(25+)",
                             fontSize = 11.69.sp,
                             fontFamily = FontFamily(Font(R.font.roboto_thinitalic)),
                             color = Color.Black

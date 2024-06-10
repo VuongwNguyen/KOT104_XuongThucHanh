@@ -4,7 +4,7 @@ const mysql = require('mysql2/promise');
 
 const databaseName = process.env.DATABASE_NAME || 'SampleDB';
 const databaseUser = process.env.DATABASE_USER || 'root';
-const databasePassword = process.env.DATABASE_PASSWORD || '0134';
+const databasePassword = process.env.DATABASE_PASSWORD || '130504';
 
 const sequelize = new Sequelize(databaseName, databaseUser, databasePassword, {
     host: 'localhost',
