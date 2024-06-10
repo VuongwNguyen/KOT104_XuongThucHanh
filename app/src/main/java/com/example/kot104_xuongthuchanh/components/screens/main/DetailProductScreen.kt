@@ -1,10 +1,5 @@
-package com.example.kot104_xuongthuchanh.components.screens.auth
+package com.example.kot104_xuongthuchanh.components.screens.main
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -34,25 +28,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.kot104_xuongthuchanh.R
-import com.example.kot104_xuongthuchanh.components.screens.auth.ui.theme.KOT104_XuongThucHanhTheme
 
-//class DetailProductScreen : ComponentActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//        setContent {
-//            KOT104_XuongThucHanhTheme {
-//                BodyDetail()
-//
-//            }
-//        }
-//    }
-//}
 data class Product(val name:String, val image: Int, val rate:Double)
  val ItemProduct = listOf(
      Product("Ground Beef Tacos",R.drawable.beef_tacos,4.5),
@@ -265,7 +245,7 @@ fun DetailProductScreen(Nav_Controller: NavHostController) {
                 .padding(top = 30.dp)
 
         ){
-            items(ItemProduct){item ->
+            items(ItemProduct){ item ->
                 ListProduct(item)
             }
         }
@@ -306,7 +286,7 @@ fun DetailProductScreen(Nav_Controller: NavHostController) {
 
 
 @Composable
-fun ListProduct(item:Product){
+fun ListProduct(item: Product){
     Box(
 
     ) {
