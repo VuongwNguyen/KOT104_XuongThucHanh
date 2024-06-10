@@ -152,6 +152,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "getProductById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/product/getProductById/145e6041-350c-4ce8-8fe8-f5b03c941fd2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"getProductById",
+								"145e6041-350c-4ce8-8fe8-f5b03c941fd2"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

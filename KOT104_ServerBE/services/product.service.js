@@ -47,5 +47,9 @@ class ProductService {
             }
         });
     }
+
+    async getProductById(id) {
+        return await product.findByPk(id);
+    }
 }
 module.exports = new ProductService();

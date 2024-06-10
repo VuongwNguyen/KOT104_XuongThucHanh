@@ -28,6 +28,15 @@ class ProductController {
             data: products
         }).json(res);
     }
+
+    async getProductById(req, res) {
+        const id = req.params.id;
+        const product = await ProductService.getProductById(id);
+        new successfullyResponse({
+            message: 'Successfully',
+            data: product
+        }).json(res);
+    }
 }
 
 module.exports = new ProductController();
